@@ -5,3 +5,4 @@ screen-brightness-control
 speechrecognition
 pyttsx3
 pyaudio
+ollama
