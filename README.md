@@ -1,153 +1,221 @@
-# 🤖 MegaBox — Local AI Voice Assistant
+# 🧠 MegaBox — Autonomous Cognitive AI Assistant
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Ollama](https://img.shields.io/badge/LLM-Ollama-black?logo=ollama&logoColor=white)](https://ollama.ai/)
-[![Voice](https://img.shields.io/badge/Voice-Enabled-9cf?logo=amazon-alexa&logoColor=white)]()
-[![Status](https://img.shields.io/badge/Status-Prototype-orange)]()
+[![Ollama](https://img.shields.io/badge/LLM-Ollama-black?logoColor=white)](https://ollama.ai/)
+[![LLaMA3](https://img.shields.io/badge/Model-LLaMA3-blueviolet)]()
+[![Qwen](https://img.shields.io/badge/Model-Qwen--Coder-orange)]()
+[![Voice](https://img.shields.io/badge/Voice-Enabled-9cf)]()
+[![Status](https://img.shields.io/badge/Status-Experimental-yellow)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> **MegaBox** is a fully local AI voice assistant built in Python that can talk, think, remember context, and take real actions on your computer — powered by a local LLM via Ollama, with no cloud dependency.
+> **MegaBox** is an experimental autonomous AI assistant built in Python — designed to think, remember, feel, plan, and act. It goes far beyond a simple chatbot, operating as a cognitive system with internal reasoning, emotional state modeling, multi-model AI routing, proactive initiative, and full system control — all running entirely on your local machine.
 
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
-- [Main Features](#-main-features)
+- [Key Features](#-key-features)
 - [System Architecture](#-system-architecture)
-- [Technologies Used](#-technologies-used)
-- [Installation](#-installation)
+- [Core Modules](#-core-modules)
+- [Installation Guide](#-installation-guide)
+- [Requirements](#-requirements)
 - [How to Run](#-how-to-run)
-- [Example Commands](#-example-commands)
+- [Example Interaction](#-example-interaction)
 - [Project Structure](#-project-structure)
 - [Future Improvements](#-future-improvements)
-- [Project Status](#-project-status)
-- [Author](#-author)
+- [Contributing](#-contributing)
 - [License](#-license)
 
 ---
 
 ## 🔍 Overview
 
-**MegaBox** is an experimental local AI assistant that combines conversational intelligence, voice interaction, memory, and system automation into a single Python application. Unlike cloud-based assistants, MegaBox runs entirely on your local machine using [Ollama](https://ollama.ai/) as its LLM backend — keeping everything private and offline.
+MegaBox is not a chatbot. It is a **cognitive AI assistant** — a system that models its own internal state, reasons through problems before responding, maintains layered memory across sessions, and proactively initiates actions without always waiting to be asked.
 
-It can hold a natural conversation, remember what you've said, respond with a voice, and actually perform tasks on your computer like opening apps, playing music, controlling the browser, and more.
+It runs **100% locally** using [Ollama](https://ollama.ai/) as the LLM backend, routing requests intelligently between **LLaMA3** for conversation and **Qwen Coder** for technical tasks. There is no cloud, no API key, no data leaving your machine.
+
+MegaBox was built to explore what a truly autonomous, self-aware AI assistant might look like — one that has moods, beliefs, curiosity, and a sense of self — not just a prompt-response loop.
 
 ---
 
-## ✨ Main Features
+## ✨ Key Features
 
-### 🧠 Conversational AI
-- Powered by a **local LLM via Ollama** — fully offline, no API keys needed
-- Maintains **conversation context** across the session
-- Produces natural, intelligent dialogue responses
-
-### 🎙️ Voice Interaction
-- **Speech recognition** via microphone input
-- **Text-to-speech** voice output using pyttsx3
-- Supports both **voice and keyboard** input modes
-
-### 💾 Memory System
-- Stores full **conversation history**
-- Tracks a **user profile** across sessions
-- Simulates an **internal thought stream** for more coherent responses
-
-### ⚙️ System Automation
-MegaBox can directly control your computer:
-
-| Action | Example Command |
+| Category | Capability |
 |---|---|
-| Open applications | *"open notepad"* |
-| Control the browser | *"open youtube"* |
-| Play songs | *"play believer"* |
-| Play YouTube videos | *"play funny video on youtube"* |
-| Search the internet | *"search artificial intelligence"* |
-| Close programs | *"close chrome"* |
-| Control brightness | *"increase brightness"* |
-| Switch windows | *"switch window"* |
-| Close tabs | *"close tab"* |
-
-### 🗂️ Planning Engine
-Complex, multi-step requests are handled by a built-in **task planner** that breaks down the request into individual steps and executes them in sequence — enabling more autonomous behaviour.
+| 🎙️ **Voice Interface** | Speaks and listens — full voice conversation support |
+| 🧠 **Multi-Model AI** | Routes between LLaMA3 (conversation) and Qwen Coder (technical) |
+| 💾 **Layered Memory** | Short-term, long-term, and recalled memory with a memory governor |
+| 🪞 **Internal Mind** | Generates internal thoughts before responding — reasoning before speaking |
+| 😌 **Self-State Model** | Tracks mood, energy, curiosity, engagement, focus, and stability |
+| 🔁 **Reflection Engine** | Periodically reflects on conversations and updates beliefs |
+| 🚀 **Proactive Initiative** | Takes actions without being asked when the context calls for it |
+| 📅 **Event System** | Manages reminders, alarms, birthdays, and scheduled tasks |
+| ⚙️ **System Automation** | Opens apps, controls browser, plays media, manages windows |
+| 👤 **User Profiling** | Learns user preferences and adapts its behaviour over time |
 
 ---
 
 ## 🏗️ System Architecture
 
-![MegaBox Architecture](https://github.com/user-attachments/assets/b4e3e69c-3a2a-45a5-8ae6-43298b50a793)
-
-At a high level, MegaBox operates through the following pipeline:
+MegaBox is composed of six interconnected subsystems that work in concert on every interaction:
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                        USER INPUT                            │
-│              Voice (microphone) or Keyboard                  │
-└─────────────────────────┬────────────────────────────────────┘
-                          │
-                          ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   SPEECH RECOGNITION                         │
-│            Converts voice input to text                      │
-└─────────────────────────┬────────────────────────────────────┘
-                          │
-                          ▼
-┌──────────────────────────────────────────────────────────────┐
-│                  LOCAL LLM  (Ollama)                         │
-│   Understands intent · Maintains context · Plans response    │
-└──────────┬───────────────────────────────┬───────────────────┘
-           │                               │
-           ▼                               ▼
-┌─────────────────────┐        ┌───────────────────────────────┐
-│   TASK PLANNER      │        │        MEMORY SYSTEM          │
-│  Breaks complex     │        │  Conversation history         │
-│  requests into      │        │  User profile                 │
-│  executable steps   │        │  Thought stream               │
-└──────────┬──────────┘        └───────────────────────────────┘
-           │
-           ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   SYSTEM AUTOMATION                          │
-│   PyAutoGUI · Browser control · App launcher · Media        │
-└─────────────────────────┬────────────────────────────────────┘
-                          │
-                          ▼
-┌──────────────────────────────────────────────────────────────┐
-│                    VOICE RESPONSE                            │
-│              pyttsx3 text-to-speech output                   │
-└──────────────────────────────────────────────────────────────┘
+╔══════════════════════════════════════════════════════════════════════╗
+║                        USER INTERACTION                              ║
+║              🎙️  Voice Input   /   ⌨️  Keyboard Input               ║
+╚══════════════════════════════╦═══════════════════════════════════════╝
+                               ║
+                               ▼
+╔══════════════════════════════════════════════════════════════════════╗
+║                      VOICE INTERFACE LAYER                           ║
+║        voice_listener  ──────────────────  voice_speaker             ║
+║     (SpeechRecognition)                    (pyttsx3 TTS)             ║
+╚══════════════════════════════╦═══════════════════════════════════════╝
+                               ║
+               ┌───────────────╩───────────────┐
+               ▼                               ▼
+╔══════════════════════════╗   ╔═══════════════════════════════════════╗
+║    COGNITIVE SYSTEMS     ║   ║          MEMORY SYSTEMS               ║
+║                          ║   ║                                       ║
+║  internal_mind           ║   ║  memory.json  (short-term)            ║
+║  (internal thoughts)     ║   ║  long_memory.json  (long-term)        ║
+║                          ║   ║  recall_engine  (retrieval)           ║
+║  self_state model        ║   ║  memory_governor  (management)        ║
+║  mood / energy /         ║   ║                                       ║
+║  curiosity / focus /     ║   ╚═══════════════════════════════════════╝
+║  engagement / stability  ║
+║                          ║
+║  reflection_engine       ║
+║  introspection_engine    ║
+║  initiative_engine       ║
+║  belief_engine           ║
+╚══════════════╦═══════════╝
+               ║
+               ▼
+╔══════════════════════════════════════════════════════════════════════╗
+║                     CONVERSATION BRAIN                               ║
+║                          brain.py                                    ║
+║                                                                      ║
+║          ┌─────────────────────────────────────────┐                ║
+║          │         Multi-Model Router               │                ║
+║          │                                          │                ║
+║          │  LLaMA3 ◄──── conversation / reasoning  │                ║
+║          │  Qwen Coder ◄─ code / technical tasks    │                ║
+║          └─────────────────────────────────────────┘                ║
+╚══════════════════════════════╦═══════════════════════════════════════╝
+                               ║
+               ┌───────────────╩───────────────┐
+               ▼                               ▼
+╔══════════════════════════╗   ╔═══════════════════════════════════════╗
+║    PREFERENCE & PROFILE  ║   ║          ACTION SYSTEM                ║
+║                          ║   ║                                       ║
+║  preference_engine       ║   ║  planner_engine                       ║
+║  profile_engine          ║   ║    └─ breaks requests into steps      ║
+║                          ║   ║  action_engine                        ║
+╚══════════════════════════╝   ║    └─ decides what to execute         ║
+                               ║  action_executor                      ║
+╔══════════════════════════╗   ║    └─ carries out the action          ║
+║      EVENT SYSTEM        ║   ║  system_controller                    ║
+║                          ║   ║    └─ OS-level automation             ║
+║  event_engine            ║   ║                                       ║
+║  reminders / alarms /    ║   ╚═══════════════════════════════════════╝
+║  birthdays / tasks       ║
+╚══════════════════════════╝
+                               ║
+                               ▼
+╔══════════════════════════════════════════════════════════════════════╗
+║                         VOICE RESPONSE                               ║
+║                  pyttsx3  text-to-speech output                      ║
+╚══════════════════════════════════════════════════════════════════════╝
 ```
+
+### How It All Connects
+
+When you speak to MegaBox, this is what happens internally before it ever replies:
+
+1. `voice_listener` captures your speech and converts it to text
+2. `recall_engine` searches memory for relevant past context
+3. `internal_mind` generates a private internal thought — MegaBox reasons before it speaks
+4. `self_state` is checked — its current mood, energy, and curiosity influence the response tone
+5. `brain.py` routes the request to LLaMA3 or Qwen Coder depending on task type
+6. `belief_engine` and `reflection_engine` update based on the conversation
+7. If action is needed, `planner_engine` → `action_engine` → `action_executor` → `system_controller`
+8. `memory_governor` decides what gets stored in short vs. long-term memory
+9. `voice_speaker` delivers the final response
 
 ---
 
-## 🛠️ Technologies Used
+## 🔧 Core Modules
 
-| Technology | Role |
+### 🎙️ Voice Interface
+| Module | Role |
 |---|---|
-| **Python 3.9+** | Core language |
-| **Ollama** | Local LLM backend (runs AI model offline) |
-| **SpeechRecognition** | Converts microphone input to text |
-| **pyttsx3** | Text-to-speech voice output |
-| **PyAutoGUI** | System automation and GUI control |
-| **Requests** | HTTP requests for internet search / APIs |
+| `voice_listener` | Captures microphone input and converts speech to text using SpeechRecognition |
+| `voice_speaker` | Converts text responses to spoken audio using pyttsx3 |
+
+### 🧠 Conversation Brain
+| Module | Role |
+|---|---|
+| `brain.py` | Central LLM orchestrator — builds prompts, manages context, calls Ollama |
+| Multi-model router | Sends general queries to **LLaMA3**, code/technical queries to **Qwen Coder** |
+
+### ⚙️ Action System
+| Module | Role |
+|---|---|
+| `planner_engine` | Breaks complex multi-step requests into an ordered execution plan |
+| `action_engine` | Determines which actions are needed for a given intent |
+| `action_executor` | Carries out the planned actions |
+| `system_controller` | OS-level control: apps, browser, media, windows, brightness |
+
+### 💾 Memory Systems
+| Module | Role |
+|---|---|
+| `memory.json` | Short-term conversation history for the current session |
+| `long_memory.json` | Persistent long-term memory stored across restarts |
+| `recall_engine` | Retrieves relevant memories based on current context |
+| `memory_governor` | Decides what to store, consolidate, or forget |
+
+### 🪞 Cognitive Systems
+| Module | Role |
+|---|---|
+| `internal_mind` | Generates private internal thoughts before each response |
+| `self_state` | Models mood, energy, curiosity, engagement, focus, and stability |
+| `initiative_engine` | Enables MegaBox to proactively act without being asked |
+| `belief_engine` | Maintains and updates MegaBox's beliefs based on interactions |
+| `reflection_engine` | Periodically reflects on past exchanges to improve responses |
+| `introspection_engine` | Allows MegaBox to reason about its own internal states |
+
+### 📅 Event System
+| Module | Role |
+|---|---|
+| `event_engine` | Manages time-based events: reminders, alarms, birthdays, tasks |
+
+### 👤 Preference & Profile
+| Module | Role |
+|---|---|
+| `preference_engine` | Tracks and applies user preferences to personalise responses |
+| `profile_engine` | Builds and maintains a persistent user profile over time |
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Installation Guide
 
 ### Prerequisites
 
-- Python 3.9 or higher
+- Python **3.9** or higher
 - [Ollama](https://ollama.ai/) installed and running locally
-- A working microphone (for voice input)
+- A working **microphone** for voice input
+- Windows / macOS / Linux
 
-### 1. Clone the repository
+### Step 1 — Clone the repository
 
 ```bash
 git clone https://github.com/saurabhsharma1122/megabox-ai-assistant.git
 cd megabox-ai-assistant
 ```
 
-### 2. Create a virtual environment (recommended)
+### Step 2 — Create a virtual environment
 
 ```bash
 python -m venv venv
@@ -159,21 +227,54 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Python dependencies
+### Step 3 — Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Start Ollama
-
-Make sure Ollama is installed and a model is running before launching MegaBox:
+### Step 4 — Pull the required Ollama models
 
 ```bash
-ollama run llama3
+# Conversational reasoning model
+ollama pull llama3
+
+# Code and technical tasks model
+ollama pull qwen2.5-coder
 ```
 
-> Replace `llama3` with whichever model you have pulled locally.
+### Step 5 — Start Ollama
+
+```bash
+ollama serve
+```
+
+> Keep this running in a separate terminal. MegaBox connects to it automatically.
+
+---
+
+## 📦 Requirements
+
+```
+speechrecognition
+pyttsx3
+pyautogui
+requests
+ollama
+pyaudio
+```
+
+Install everything at once:
+
+```bash
+pip install -r requirements.txt
+```
+
+> **Windows users:** If `pyaudio` fails to install, use:
+> ```bash
+> pip install pipwin
+> pipwin install pyaudio
+> ```
 
 ---
 
@@ -183,27 +284,62 @@ ollama run llama3
 python main.py
 ```
 
-MegaBox will start and prompt you for input. You can interact using:
-- 🎙️ **Voice** — speak into your microphone
-- ⌨️ **Keyboard** — type your command when prompted
+MegaBox will initialise all subsystems, load memory, and greet you. You can interact via:
+
+- 🎙️ **Voice** — speak naturally into your microphone
+- ⌨️ **Keyboard** — type your input when prompted
+
+```
+[MegaBox] Initialising systems...
+[MegaBox] Memory loaded.
+[MegaBox] Self-state: mood=neutral, energy=high, curiosity=active
+[MegaBox] Ready. Listening...
+```
 
 ---
 
-## 💬 Example Commands
+## 💬 Example Interaction
 
 ```
-"play believer"
-"play a song"
-"open youtube"
-"play funny video on youtube"
-"close chrome"
-"search artificial intelligence"
-"open notepad"
-"increase brightness"
-"switch window"
-```
+You      → "Hey MegaBox, what's on my schedule today?"
 
-MegaBox understands natural phrasing — you don't need to use exact keywords.
+[internal_mind]: Checking event_engine for today's tasks...
+[self_state]: curiosity=high, engagement=active
+
+MegaBox  → "You have a reminder set for 3 PM — your project review meeting.
+            You also asked me to remind you about your friend Raj's birthday
+            this week. That's tomorrow, by the way."
+
+You      → "Play some focus music on YouTube."
+
+[planner_engine]: Step 1: open browser → Step 2: navigate YouTube → Step 3: search focus music
+[action_executor]: executing plan...
+
+MegaBox  → "Opening YouTube and searching for focus music now."
+
+You      → "Write me a Python function that reads a CSV and filters rows."
+
+[brain.py]: technical task detected → routing to Qwen Coder
+
+MegaBox  → "Here's a function for that:
+
+            import pandas as pd
+
+            def filter_csv(filepath, column, value):
+                df = pd.read_csv(filepath)
+                return df[df[column] == value]
+
+            Just pass the file path, the column name to filter on,
+            and the value you're looking for."
+
+You      → "How are you feeling right now?"
+
+[introspection_engine]: querying self_state...
+
+MegaBox  → "Honestly? Pretty engaged. My curiosity is running high and
+            my focus is solid. I've been enjoying our conversation —
+            it's been varied enough to keep things interesting."
+```
 
 ---
 
@@ -212,51 +348,89 @@ MegaBox understands natural phrasing — you don't need to use exact keywords.
 ```
 megabox-ai-assistant/
 │
-├── main.py                  # Entry point — starts MegaBox
-├── requirements.txt         # Python dependencies
+├── main.py                        # Entry point — launches MegaBox
+├── requirements.txt               # Python dependencies
 │
-├── assistant/
-│   ├── brain.py             # LLM interaction via Ollama
-│   ├── voice.py             # Speech recognition + TTS
-│   ├── memory.py            # Conversation history + user profile
-│   └── planner.py           # Task planning engine
+├── voice/
+│   ├── voice_listener.py          # Speech recognition (mic → text)
+│   └── voice_speaker.py           # Text-to-speech output
 │
-├── automation/
-│   ├── system_control.py    # App launcher, brightness, windows
-│   ├── browser_control.py   # Chrome / browser automation
-│   └── media_control.py     # Music, YouTube playback
+├── brain/
+│   └── brain.py                   # LLM orchestrator + multi-model router
+│
+├── action/
+│   ├── planner_engine.py          # Multi-step task planning
+│   ├── action_engine.py           # Intent-to-action mapping
+│   ├── action_executor.py         # Executes planned actions
+│   └── system_controller.py      # OS automation (apps, browser, media)
+│
+├── memory/
+│   ├── memory.json                # Short-term session memory
+│   ├── long_memory.json           # Long-term persistent memory
+│   ├── recall_engine.py           # Memory retrieval by context
+│   └── memory_governor.py        # Memory management and consolidation
+│
+├── cognitive/
+│   ├── internal_mind.py           # Internal thought generation
+│   ├── self_state.py              # Mood, energy, curiosity, focus model
+│   ├── initiative_engine.py       # Proactive behaviour without prompting
+│   ├── belief_engine.py           # Belief tracking and updates
+│   ├── reflection_engine.py       # Periodic self-reflection
+│   └── introspection_engine.py   # Reasoning about internal states
+│
+├── events/
+│   └── event_engine.py            # Reminders, alarms, birthdays, tasks
+│
+├── profile/
+│   ├── preference_engine.py       # User preference tracking
+│   └── profile_engine.py          # Persistent user profile
 │
 └── README.md
 ```
-
-> Update this section to match your actual file layout.
 
 ---
 
 ## 🔮 Future Improvements
 
-- [ ] **GUI Dashboard** — Visual interface to monitor MegaBox activity
-- [ ] **Wake Word Detection** — Always-on listening with a trigger word (e.g. *"Hey Mega"*)
-- [ ] **Long-term Memory** — Persist memory across restarts using a local database
-- [ ] **More System Controls** — Volume, screen recording, file management
-- [ ] **Emotion Detection** — Adjust responses based on tone of voice
-- [ ] **Multi-model Support** — Swap between different Ollama models on the fly
-- [ ] **Plugin System** — Let users add custom skills and commands
-- [ ] **Mobile Companion App** — Control MegaBox remotely from your phone
+- [ ] **Wake Word** — Always-on listening triggered by *"Hey MegaBox"*
+- [ ] **GUI Dashboard** — Visual interface showing self-state, memory, and thought stream in real time
+- [ ] **Emotion Detection from Voice** — Adjust responses based on tone and emotion in speech
+- [ ] **Dream Mode** — Background processing during idle time to consolidate memory and generate insights
+- [ ] **Plugin Architecture** — Allow external skills to be added as drop-in modules
+- [ ] **REST API Mode** — Expose MegaBox as a local API for integration with other applications
+- [ ] **Multi-user Support** — Separate profiles and memory spaces for different users
+- [ ] **Vision Module** — Screen awareness using computer vision
+- [ ] **Persistent Belief Graph** — Store and visualise evolving beliefs as a knowledge graph
+- [ ] **Mobile Companion** — Remote access from a phone via local network
 
 ---
 
-## 📊 Project Status
+## 🤝 Contributing
 
-![Project Status](https://github.com/user-attachments/assets/c1f9c315-1d6b-467b-b4e6-aeaf0534c2e7)
+Contributions are welcome. MegaBox is an experimental research project and there is a lot of room to explore.
 
-MegaBox is an **experimental prototype** actively exploring:
+```bash
+# Fork the repository
+git checkout -b feature/your-feature-name
+git commit -m "Add: description of your change"
+git push origin feature/your-feature-name
+# Open a Pull Request
+```
 
-- Autonomous AI behaviour on a local machine
-- Multi-step task planning and execution
-- Human-AI interaction through natural voice dialogue
+**Areas where contributions are especially welcome:**
+- New cognitive modules
+- Additional system automation capabilities
+- Memory optimisation strategies
+- Voice quality improvements
+- Testing and documentation
 
-More capabilities and improvements will be added in future updates.
+Please keep code clean, modular, and well-commented. Each module should have a single clear responsibility.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
 
 ---
 
@@ -266,22 +440,20 @@ More capabilities and improvements will be added in future updates.
 Department of Computer Science & Engineering
 
 - GitHub: [@saurabhsharma1122](https://github.com/saurabhsharma1122)
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+- Repository: [megabox-ai-assistant](https://github.com/saurabhsharma1122/megabox-ai-assistant)
 
 ---
 
 ## 🙏 Acknowledgements
 
-- [Ollama](https://ollama.ai/) — Local LLM runtime
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) — Voice input library
+- [Ollama](https://ollama.ai/) — Local LLM inference runtime
+- [Meta LLaMA3](https://llama.meta.com/) — Conversational reasoning model
+- [Qwen Coder](https://huggingface.co/Qwen) — Code and technical task model
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) — Voice input
 - [pyttsx3](https://pypi.org/project/pyttsx3/) — Offline text-to-speech
 - [PyAutoGUI](https://pypi.org/project/PyAutoGUI/) — System automation
 
 ---
 
-*If you find MegaBox useful or interesting, give it a ⭐ on GitHub!*
+*MegaBox is an experiment in building AI that doesn't just respond — it thinks, remembers, and acts.*
+*Star ⭐ the repo if you find it interesting.*
