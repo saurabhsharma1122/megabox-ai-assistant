@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import threading
+import re
 
 from internal_mind import think
 from trait_engine import evolve_traits
@@ -31,6 +32,31 @@ WAKE_WORDS = ["mega box", "megabox", "hey megabox", "hey mega box"]
 
 
 # -------------------------
+# CODE DETECTION
+# -------------------------
+def is_code(text):
+
+    code_patterns = [
+        r"def ",
+        r"class ",
+        r"import ",
+        r"print\(",
+        r"for ",
+        r"while ",
+        r"if __name__",
+        r"{",
+        r"}",
+        r";"
+    ]
+
+    for pattern in code_patterns:
+        if re.search(pattern, text):
+            return True
+
+    return False
+
+
+# -------------------------
 # IDLE MONITOR THREAD
 # -------------------------
 def idle_monitor():
@@ -49,7 +75,10 @@ def idle_monitor():
 
                 if msg:
                     print("\nmegabox:", msg)
-                    speak(msg)
+
+                    if not is_code(msg):
+                        speak(msg)
+
                     reflect("", msg)
 
             idle_spoken = True
@@ -103,7 +132,10 @@ def voice_loop():
 
             if reply:
                 print("megabox:", reply)
-                speak(reply)
+
+                # do not speak code
+                if not is_code(reply):
+                    speak(reply)
 
                 # cognition AFTER reply
                 reflect(heard, reply)
@@ -164,7 +196,10 @@ try:
 
             if reply:
                 print("megabox:", reply)
-                speak(reply)
+
+                # do not speak code
+                if not is_code(reply):
+                    speak(reply)
 
                 # cognition AFTER reply
                 reflect(user_input, reply)
